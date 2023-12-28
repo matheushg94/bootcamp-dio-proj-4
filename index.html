@@ -7,14 +7,37 @@
     <title>Yu-Gi-Oh Jokenpo</title>
 
     <link rel="stylesheet" href="src/styles/reset.css">
-    <link rel="stylesheet" href="src/styles/containers_and_frames.css">
-    <link rel="stylesheet" href="src/styles/buttons.css">
+    <link rel="stylesheet" href="src/styles/scss/containers_and_frames.css">
+    <link rel="stylesheet" href="src/styles/scss/buttons.css">
     <link rel="stylesheet" href="src/styles/main.css">
 </head>
 
 <body>
-    <h1>Olá, mundo</h1>
-    <button class="rpgui-button">olá</button>
+    <!-- .bg-video+.container>(.container__left+.container__right) -->
+    <div class="bg-video">
+        <video class="video" autoplay loop muted>
+            <source src="src/assets/video/yugi.mp4" type="video/mp4" />
+        </video>
+    </div>
+
+    <div class="container">
+        <div class="container__left rpgui-container framed-golden-2">
+            <div class="score-box frame">
+                <span id="score">Win: 0 Lose: 0</span>
+            </div>
+            <div class="card-avatar frame">
+                <img id="card-image">
+            </div>
+            <div class="card-stats frame">
+                <span id="card-name">ola</span>
+                <span id="card-type">tchau</span>
+            </div>
+        </div>
+        <div class="container__right">
+            <div class="card-table"></div>
+        </div>
+    </div>
+
     <script src="src/scripts/engine.js" defer></script>
 </body>
 
