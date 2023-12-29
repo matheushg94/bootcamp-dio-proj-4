@@ -87,6 +87,14 @@
     justify-content: space-around;
 }
 
+.card {
+    transition: .15s;
+}
+
+.card:hover {
+    scale: 1.2;
+}
+
 .card-table {
     display: flex;
     flex-flow: column nowrap;
