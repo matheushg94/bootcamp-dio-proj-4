@@ -36,31 +36,71 @@ const cardTypes = {
     }
 }
 
-const cardImgPath = 'src/assets/icons/';
+const imgDir = 'src/assets/icons/';
 
 const cardData = [
     {
         id: 0,
         name: 'Dark Magician',
         type: cardTypes.paper,
-        img: `${cardImgPath}magician.png`
+        img: `${imgDir}magician.png`
     },
     {
         id: 1,
         name: 'Blue Eyed White Dragon',
         type: cardTypes.rock,
-        img: `${cardImgPath}dragon.png`
+        img: `${imgDir}dragon.png`
     },
     {
         id: 2,
         name: 'Exodia',
         type: cardTypes.scissors,
-        img: `${cardImgPath}exodia.png`
+        img: `${imgDir}exodia.png`
     }
 ]
 
-function init() {
+const contestantHands = {
+    player: 'player-hand',
+    ai: 'ai-hand'
+}
 
+async function getRandomCardId() {
+    const randomIndex = Math.floor(Math.random() * cardData.length);
+    return cardData[randomIndex].id;
+}
+
+async function createCard(cardId, contestantHand) {
+    const card = document.createElement('img');
+    card.setAttribute('data-id', cardId);
+    card.setAttribute('src', `${imgDir}card-back.png`);
+    card.setAttribute('height', '100px');
+    card.classList.add('card');
+
+    if (contestantHand === contestantHands.player) {
+        card.addEventListener('click', () => {
+            playCard(card.getAttribute('data-id'));
+        });
+    }
+
+    card.addEventListener('mouseover', () => {
+        displayCard(cardId);
+    })
+
+    return card;
+}
+
+async function drawCards(cardAmount, contestantHand) {
+    for (let i = 0; i < cardAmount; i++) {
+        const randomCardId = await getRandomCardId();
+        const card = await createCard(randomCardId, contestantHand);
+
+        document.querySelector(`#${contestantHand}`).appendChild(card);
+    }
+}
+
+function init() {
+    drawCards(5, contestantHands.player);
+    drawCards(5, contestantHands.ai);
 }
 
 init();
