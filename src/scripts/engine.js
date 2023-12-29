@@ -69,22 +69,29 @@ async function getRandomCardId() {
     return cardData[randomIndex].id;
 }
 
+function displayCard(cardId) {
+    state.cardHover.cardAvatar.src = cardData[cardId].img;
+    state.cardHover.cardName.innerHTML = cardData[cardId].name;
+    state.cardHover.cardType.innerHTML = `Attribute: ${cardData[cardId].type.name}`;
+}
+
 async function createCard(cardId, contestantHand) {
     const card = document.createElement('img');
     card.setAttribute('data-id', cardId);
     card.setAttribute('src', `${imgDir}card-back.png`);
     card.setAttribute('height', '100px');
-    card.classList.add('card');
-
+    
     if (contestantHand === contestantHands.player) {
+        card.classList.add('card');
+
+        card.addEventListener('mouseover', () => {
+            displayCard(cardId);
+        })
+
         card.addEventListener('click', () => {
             playCard(card.getAttribute('data-id'));
         });
     }
-
-    card.addEventListener('mouseover', () => {
-        displayCard(cardId);
-    })
 
     return card;
 }
