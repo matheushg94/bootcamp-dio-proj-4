@@ -75,6 +75,26 @@ function displayCard(cardId) {
     state.cardHover.cardType.innerHTML = `Attribute: ${cardData[cardId].type.name}`;
 }
 
+async function removeHandCards() {
+    
+}
+
+async function playCards(playerCardId) {
+    await removeHandCards();
+
+    let aiCardId = await getRandomCardId();
+
+    state.cardTable.playerCard.style.display = 'block';
+    state.cardTable.playerCard.src = cardData[playerCardId].img;
+    state.cardTable.aiCard.style.display = 'block';
+    state.cardTable.aiCard.src = cardData[aiCardId].img;
+
+    let duelResult = await checkDuelResult(playerCardId, aiCardId);
+
+    await updateScore(duelResult);
+    await drawButton(duelResult);
+}
+
 async function createCard(cardId, contestantHand) {
     const card = document.createElement('img');
     card.setAttribute('data-id', cardId);
@@ -89,7 +109,7 @@ async function createCard(cardId, contestantHand) {
         })
 
         card.addEventListener('click', () => {
-            playCard(card.getAttribute('data-id'));
+            playCards(card.getAttribute('data-id'));
         });
     }
 
