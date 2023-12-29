@@ -13,6 +13,10 @@ const state = {
         playerCard: document.querySelector("#player-card"),
         aiCard: document.querySelector("#ai-card")
     },
+    contestants: {
+        player: document.querySelector('#player-hand'),
+        ai: document.querySelector('#ai-hand')
+    },
     actions: {
         btnNextDuel: document.querySelector("btn-next-duel")
     }
@@ -59,11 +63,6 @@ const cardData = [
     }
 ]
 
-const contestantHands = {
-    player: 'player-hand',
-    ai: 'ai-hand'
-}
-
 async function getRandomCardId() {
     const randomIndex = Math.floor(Math.random() * cardData.length);
     return cardData[randomIndex].id;
@@ -76,7 +75,11 @@ function displayCard(cardId) {
 }
 
 async function removeHandCards() {
-    
+    let cardHands = document.querySelectorAll('.card-hand');
+    cardHands.forEach(hand => {
+        let cards = hand.querySelectorAll('img');
+        cards.forEach(card => card.remove());
+    });
 }
 
 async function playCards(playerCardId) {
@@ -95,13 +98,13 @@ async function playCards(playerCardId) {
     await drawButton(duelResult);
 }
 
-async function createCard(cardId, contestantHand) {
+async function createCard(cardId, contestant) {
     const card = document.createElement('img');
     card.setAttribute('data-id', cardId);
     card.setAttribute('src', `${imgDir}card-back.png`);
     card.setAttribute('height', '100px');
-    
-    if (contestantHand === contestantHands.player) {
+
+    if (contestant === state.contestants.player) {
         card.classList.add('card');
 
         card.addEventListener('mouseover', () => {
@@ -116,18 +119,18 @@ async function createCard(cardId, contestantHand) {
     return card;
 }
 
-async function drawCards(cardAmount, contestantHand) {
+async function drawCards(cardAmount, contestant) {
     for (let i = 0; i < cardAmount; i++) {
         const randomCardId = await getRandomCardId();
-        const card = await createCard(randomCardId, contestantHand);
+        const card = await createCard(randomCardId, contestant);
 
-        document.querySelector(`#${contestantHand}`).appendChild(card);
+        contestant.appendChild(card);
     }
 }
 
 function init() {
-    drawCards(5, contestantHands.player);
-    drawCards(5, contestantHands.ai);
+    drawCards(5, state.contestants.player);
+    drawCards(5, state.contestants.ai);
 }
 
 init();
