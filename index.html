@@ -35,9 +35,22 @@
         </div>
 
         <div class="container__right">
-            <div class="card-hand rpgui-container framed"></div>
-            <div class="card-table"></div>
-            <div class="card-hand rpgui-container framed"></div>
+            <div class="card-hand rpgui-container framed" id="ai-hand"></div>
+            <div class="card-table">
+                <div class="card-table__top">
+                    <div class="card-display">
+                        <img id="player-card">
+                    </div>
+                    <img height="100px" src="src/assets/icons/millenium2.png" alt="olho do milênio, olho estilizado em cores douradas desenhado em estilo egípcio">
+                    <div class="card-display">
+                        <img id="ai-card">
+                    </div>
+                </div>
+                <div class="card-table__bottom">
+                    <button id="btn-next-duel" class="rpgui-button">GANHOU</button>
+                </div>
+            </div>
+            <div class="card-hand rpgui-container framed" id="player-hand"></div>
         </div>
     </div>
 
