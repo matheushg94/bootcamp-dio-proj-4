@@ -18,7 +18,7 @@ const state = {
         ai: document.querySelector('#ai-hand')
     },
     actions: {
-        btnNextDuel: document.querySelector("btn-next-duel")
+        btnNextDuel: document.querySelector("#btn-next-duel")
     }
 }
 
@@ -75,27 +75,64 @@ function displayCard(cardId) {
 }
 
 async function removeHandCards() {
-    let cardHands = document.querySelectorAll('.card-hand');
+    const cardHands = document.querySelectorAll('.card-hand');
     cardHands.forEach(hand => {
-        let cards = hand.querySelectorAll('img');
+        const cards = hand.querySelectorAll('img');
         cards.forEach(card => card.remove());
     });
 }
 
+async function checkDuelResult(playerCardId, aiCardId) {
+    const playerCard = cardData[playerCardId];
+    const playerWinsAgainst = playerCard.type.winAgainst;
+    const playerLosesAgainst = playerCard.type.loseAgainst;
+    const aiCardType = cardData[aiCardId].type.name;
+
+    if (playerWinsAgainst.includes(aiCardType)) {
+        state.score.playerScore++;
+        return 'Win';
+    }
+
+    if (playerLosesAgainst.includes(aiCardType)) {
+        state.score.aiScore++;
+        return 'Lose';
+    }
+
+    return 'tie';
+}
+
+async function playSound(duelResult) {
+    const audio = new Audio(`./src/assets/audios/${duelResult.toLowerCase()}.wav`);
+    audio.volume = 0.3;
+    audio.play();
+}
+
+async function updateScore() {
+    state.score.scoreDisplay.innerHTML = `Win: ${state.score.playerScore} Lose: ${state.score.aiScore}`;
+}
+
+async function drawButton(duelResult) {
+    state.actions.btnNextDuel.innerHTML = duelResult;
+    state.actions.btnNextDuel.style.display = 'block';
+}
+
 async function playCards(playerCardId) {
     await removeHandCards();
-
+    
     let aiCardId = await getRandomCardId();
-
+    
     state.cardTable.playerCard.style.display = 'block';
     state.cardTable.playerCard.src = cardData[playerCardId].img;
     state.cardTable.aiCard.style.display = 'block';
     state.cardTable.aiCard.src = cardData[aiCardId].img;
-
+    
     let duelResult = await checkDuelResult(playerCardId, aiCardId);
-
-    await updateScore(duelResult);
-    await drawButton(duelResult);
+    
+    if (duelResult === 'Win' || duelResult === 'Lose') {
+        await playSound(duelResult);
+    }
+    await updateScore();
+    await drawButton(duelResult.toUpperCase());
 }
 
 async function createCard(cardId, contestant) {
@@ -115,7 +152,7 @@ async function createCard(cardId, contestant) {
             playCards(card.getAttribute('data-id'));
         });
     }
-
+    
     return card;
 }
 
@@ -128,9 +165,24 @@ async function drawCards(cardAmount, contestant) {
     }
 }
 
+async function resetTable() {
+    state.cardHover.cardAvatar.src = "";
+    state.cardHover.cardName.innerHTML = 'hover over your cards';
+    state.cardHover.cardType.innerHTML = 'Attribute: ';
+
+    state.cardTable.playerCard.style.display = 'none';
+    state.cardTable.aiCard.style.display = 'none';
+
+    state.actions.btnNextDuel.style.display = 'none';
+
+    drawCards(5, state.contestants.player);
+    drawCards(5, state.contestants.ai);
+}
+
 function init() {
     drawCards(5, state.contestants.player);
     drawCards(5, state.contestants.ai);
+    state.actions.btnNextDuel.addEventListener('click', () => resetTable());
 }
 
 init();
