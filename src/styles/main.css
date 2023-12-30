@@ -121,8 +121,9 @@
     width: 120px;
     object-fit: cover;
     border-radius: 5px;
+    display: none;
 }
 
 #btn-next-duel {
-    display: none;
+    visibility: hidden;
 }
