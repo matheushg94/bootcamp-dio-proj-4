@@ -113,7 +113,7 @@ async function updateScore() {
 
 async function drawButton(duelResult) {
     state.actions.btnNextDuel.innerHTML = duelResult;
-    state.actions.btnNextDuel.style.display = 'block';
+    state.actions.btnNextDuel.style.visibility = 'visible';
 }
 
 async function playCards(playerCardId) {
@@ -173,7 +173,7 @@ async function resetTable() {
     state.cardTable.playerCard.style.display = 'none';
     state.cardTable.aiCard.style.display = 'none';
 
-    state.actions.btnNextDuel.style.display = 'none';
+    state.actions.btnNextDuel.style.visibility = 'hidden';
 
     drawCards(5, state.contestants.player);
     drawCards(5, state.contestants.ai);
