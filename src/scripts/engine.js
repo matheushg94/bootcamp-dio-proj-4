@@ -19,6 +19,9 @@ const state = {
     },
     actions: {
         btnNextDuel: document.querySelector("#btn-next-duel")
+    },
+    sounds: {
+        bgm: document.querySelector("#bgm")
     }
 }
 
@@ -183,6 +186,9 @@ function init() {
     drawCards(5, state.contestants.player);
     drawCards(5, state.contestants.ai);
     state.actions.btnNextDuel.addEventListener('click', () => resetTable());
+
+    state.sounds.bgm.volume = 0.3;
+    // state.sounds.bgm.play();
 }
 
 init();
